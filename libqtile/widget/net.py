@@ -139,6 +139,8 @@ class Net(base.ThreadPoolText):
                 up, up_suffix = self.convert_b(up)
                 total, total_suffix = self.convert_b(total)
                 self.stats[intf] = new_stats[intf]
+                down_str = f'{down:6.0f}' if down_suffix == 'B' else f'{down:6.2f}'
+                up_str = f'{up:6.0f}' if up_suffix == 'B' else f'{up:6.2f}'
                 ret_stat.append(
                     self.format.format(
                         interface=intf,
@@ -146,6 +148,8 @@ class Net(base.ThreadPoolText):
                         down_suffix=down_suffix,
                         up=up,
                         up_suffix=up_suffix,
+                        down_str=down_str,
+                        up_str=up_str,
                         total=total,
                         total_suffix=total_suffix,
                     )
