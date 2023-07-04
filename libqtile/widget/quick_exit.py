@@ -19,6 +19,7 @@
 # SOFTWARE.
 from libqtile.command.base import expose_command
 from libqtile.widget import base
+from pydbus import SystemBus
 
 
 class QuickExit(base._TextBox):
@@ -60,14 +61,14 @@ class QuickExit(base._TextBox):
         self.draw()
 
         if self.countdown == 0:
-            self.qtile.stop()
-            return
+            bus = SystemBus()
+            proxy = bus.get('org.freedesktop.login1', '/org/freedesktop/login1')
+            if proxy.CanPowerOff():
+                proxy.PowerOff(False)
 
     @expose_command()
     def trigger(self):
-        if not self.is_counting:
-            self.is_counting = True
-            self.update()
-        else:
-            self.__reset()
-            self.draw()
+        bus = SystemBus()
+        proxy = bus.get('org.freedesktop.login1', '/org/freedesktop/login1')
+        if proxy.CanPowerOff():
+            proxy.PowerOff(False)
