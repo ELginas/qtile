@@ -365,7 +365,7 @@ class _Group(CommandObject):
         self.layout = layout
 
     @expose_command()
-    def toscreen(self, screen=None, toggle=False, swap=True):
+    def toscreen(self, screen=None, toggle=False, swap=False):
         """Pull a group to a specified screen.
 
         Parameters

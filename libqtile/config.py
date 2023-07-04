@@ -521,7 +521,7 @@ class Screen(CommandObject):
         return ScreenRect(self.dx, self.dy, self.dwidth, self.dheight)
 
     def set_group(
-        self, new_group: _Group | None, save_prev: bool = True, warp: bool = True, swap: bool = True
+        self, new_group: _Group | None, save_prev: bool = True, warp: bool = True, swap: bool = False
     ) -> None:
         """Put group on this screen"""
         if new_group is None:
