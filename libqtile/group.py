@@ -365,7 +365,7 @@ class _Group(CommandObject):
         self.layout = layout
 
     @expose_command()
-    def toscreen(self, screen=None, toggle=False):
+    def toscreen(self, screen=None, toggle=False, swap=True):
         """Pull a group to a specified screen.
 
         Parameters
@@ -375,7 +375,10 @@ class _Group(CommandObject):
         toggle :
             If this group is already on the screen, then the group is toggled
             with last used
-
+        swap :
+            If destination screen is in use, swap groups between screens, else,
+            move destination screen group elsewhere and put current group to
+            destination screen
         Examples
         ========
         Pull group to the current screen::
@@ -395,7 +398,7 @@ class _Group(CommandObject):
             if toggle:
                 screen.toggle_group(self)
         else:
-            screen.set_group(self)
+            screen.set_group(self, warp=False, swap=swap)
 
     def _get_group(self, direction, skip_empty=False, skip_managed=False):
         """Find a group walking the groups list in the specified direction

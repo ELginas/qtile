@@ -521,7 +521,7 @@ class Screen(CommandObject):
         return ScreenRect(self.dx, self.dy, self.dwidth, self.dheight)
 
     def set_group(
-        self, new_group: _Group | None, save_prev: bool = True, warp: bool = True
+        self, new_group: _Group | None, save_prev: bool = True, warp: bool = True, swap: bool = True
     ) -> None:
         """Put group on this screen"""
         if new_group is None:
@@ -545,10 +545,23 @@ class Screen(CommandObject):
             g2 = new_group
             s2 = new_group.screen
 
-            s2.group = g1
-            g1.set_screen(s2, warp)
-            s1.group = g2
-            g2.set_screen(s1, warp)
+            if not swap:
+                for group in self.qtile.groups:
+                    if not group.screen and len(group.windows) == 0:
+                        grp = group
+                        break
+                if grp:
+                    s1.group = g2
+                    g2.set_screen(s1, warp)
+                    s2.group = grp
+                    g1.set_screen(None, warp)
+                else:
+                    logger.warning('no available group to move to')
+            else:
+                s2.group = g1
+                g1.set_screen(s2, warp)
+                s1.group = g2
+                g2.set_screen(s1, warp)
         else:
             assert self.qtile is not None
             old_group = self.group
